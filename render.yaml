@@ -8,8 +8,6 @@ services:
     plan: starter
     region: oregon
     branch: main
-    buildCommand: echo "Using Docker build"
-    startCommand: echo "Using Docker CMD"
     envVars:
       - key: NODE_ENV
         value: production
