@@ -1,0 +1,32 @@
+# Render deployment configuration for HeadlessX
+services:
+  - type: web
+    name: headlessx
+    env: docker
+    dockerfilePath: ./Dockerfile.render
+    dockerContext: .
+    plan: starter
+    region: oregon
+    branch: main
+    buildCommand: echo "Using Docker build"
+    startCommand: echo "Using Docker CMD"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: AUTH_TOKEN
+        generateValue: true
+      - key: DOMAIN
+        fromService:
+          type: web
+          name: headlessx
+          property: host
+      - key: SUBDOMAIN
+        value: headlessx
+      - key: UV_THREADPOOL_SIZE
+        value: "128"
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=4096"
+    healthCheckPath: /api/health
+    autoDeploy: true
